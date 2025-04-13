@@ -1,23 +1,31 @@
-/* Variables globales para colores */
+/* =======================
+   VARIABLES GLOBALES
+========================== */
 :root {
   --color-fondo: rgb(237, 237, 237);
   --color-navbar: rgb(26, 26, 26);
   --color-primario: #007bff;
   --color-hover: #0056b3;
-  --color-texto: white;
+  --color-texto: black;
 }
 
-/* Configuración general del body */
+/* =======================
+   BODY & ESTRUCTURA GENERAL
+========================== */
 body {
   margin: 0;
   padding: 0;
   background-color: var(--color-fondo);
+  color: var(--color-texto);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-/* Configuración del navbar */
+/* =======================
+   NAVBAR
+========================== */
 .navbar {
   padding: 0.5rem;
   background-color: var(--color-navbar);
@@ -27,19 +35,14 @@ body {
   justify-content: flex-end;
 }
 
-.navbar-brand {
-  color: var(--color-texto);
+.navbar,
+.navbar * {
+  color: white !important;
 }
 
-.nav-custom:hover {
-  color: var(--color-primario);
-}
-
-/* Estilos para imágenes */
-img {
-  height: auto;
-}
-
+/* =======================
+   IMÁGENES
+========================== */
 .register img {
   width: 100%;
   max-width: 500px;
@@ -48,12 +51,28 @@ img {
   transition: transform 0.3s ease;
 }
 
-/* Efectos hover */
 .img-hover-effect:hover {
   opacity: 0.9;
   transform: scale(1.03);
 }
 
+/* =======================
+   REGISTER SECTION
+========================== */
+.register .row {
+  min-height: 80vh;
+}
+
+.register .col-md-6 {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =======================
+   RESPONSIVE
+========================== */
 @media (max-width: 576px) {
   .register img {
     width: 85%;
@@ -61,21 +80,9 @@ img {
   }
 }
 
-/* Contenedor principal - CORRECCIÓN PRINCIPAL */
-.register .row {
-  min-height: 80vh;
-  /* Eliminado el gap para no afectar el grid de Bootstrap */
-}
-
-.register .col-md-6 {
-  /* Reducido padding para mantener el layout */
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Botón flotante */
+/* =======================
+   BOTÓN FLOTANTE
+========================== */
 .btn-flotante {
   position: fixed;
   bottom: 20px;
@@ -100,17 +107,180 @@ img {
   transform: scale(1.1);
 }
 
-/* Footer */
+/* =======================
+   FOOTER
+========================== */
 footer {
   background-color: var(--color-navbar);
-  color: var(--color-texto);
   text-align: center;
   padding: 2rem 0;
   margin-top: auto;
+  
 }
 
-@media (max-width: 800px) {
-  footer {
-    padding: 1.5rem 0;
+footer,
+footer * {
+  color: white !important;
+  
+}
+
+/* =======================
+   ANIMACIONES
+========================== */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* =======================
+   MODO OSCURO
+========================== */
+body.dark-mode {
+  --color-fondo: rgb(26, 26, 26);
+  --color-navbar: rgb(48, 48, 48);
+  --color-texto: white;
+}
+
+body:not(.no-transition) {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.no-transition * {
+  transition: none !important;
+}
+
+/* =======================
+   REGISTRO (Diseño de Página)
+========================== */
+.registerPageTwo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.registerPageTwo > div {
+  flex: 1;
+  min-width: 300px;
+  padding: 1rem;
+}
+
+.divRegister {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background-color: var(--color-fondo);
+  border: 1px solid #666;
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+  .registerPageTwo {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
   }
+  
+  .registerPageTwo > div {
+    width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .card {
+    padding: 1rem;
+  }
+}
+
+.divCentrada {
+  display: flex;
+  justify-content: center;  /* Centra horizontalmente */
+  align-items: center;      /* Centra verticalmente */
+  height: 100%;             /* Asegura que ocupe el alto disponible */
+  text-align: center;       /* Centra el texto si es necesario */
+}
+
+/* ================================
+      sección de registro
+=================================*/
+
+.divCentrada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.mensajes {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 80ch;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .divCentrada {
+      padding: 1rem;
+      gap: 1.5rem;
+  }
+  
+  h2 {
+      font-size: 2rem;
+  }
+  
+  h4 {
+      font-size: 1.1rem;
+      padding: 0 1rem;
+  }
+}
+
+
+/* =======================================================
+Modificaciones para que oscurescan letras en el formulario
+========================================================*/
+
+/* Añade estas reglas */
+.card,
+.card h2,
+.card .form-label {
+  color: var(--color-texto) !important; /* El !important es necesario para sobreescribir posibles estilos de Bootstrap */
+}
+
+/* Asegúrate que la transición del color se aplique */
+body:not(.no-transition) * {
+  transition: color 0.5s ease !important;
+}
+
+.form-control {
+  border-color: var(--color-texto);
+  background-color: transparent !important;
+}
+
+.separador-footer {
+  padding-bottom: 3rem;
 }
