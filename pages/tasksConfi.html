@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Título de la página. --//-- Title of the page.  -->
-    <title>Registro de tareas</title>
+    <title>Tareas || Eliminadas</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="../assets/images/tasks2.png">
@@ -40,7 +40,7 @@
 
 <body>
     <div class="sidebar d-flex flex-column p-3 bg-dark" style="width: 250px;" id="sidebar">
-        <a href="#" class="d-flex align-items-center gap-2 text-decoration-none mb-4">
+        <a href="#" class="d-flex align-items-center gap-2 text-decoration-none mb-4" onclick="confirmarSalida()">
             <img src="../assets/images/tasks2.png" alt="logo" style="width: 30px; height: auto;">
             <h4 class="text-white m-0 d-none d-md-inline">Tareas</h4>
         </a>
@@ -68,14 +68,71 @@
         <a href="#" class="text-white mb-2 d-flex align-items-center gap-2" onclick="confirmarSalida()">
             <i class="bi bi-box-arrow-right"></i>
             <span class="d-none d-md-inline">Salir</span>
-          </a>
+        </a>
     </div>
 
+    <section class="container my-4" id="mainContent">
+        <div class="row">
+            <!-- Div de 12 columnas -->
+            <div class="col-12 mb-4">
+                <div class="bg-primary text-white text-center p-3 rounded">
+                    <h4>Configuración</h4>
+                </div>
+            </div>
 
-    <div class="flex-grow-1 p-3">
-        <h1>Registrar tareas</h1>
-        <p>Aquí va el contenido de tu app.</p>
-    </div>
+            <!-- Primer div de 6 columnas -->
+            <div class="col-md-6 mb-4">
+                <div class="bg-secondary text-white p-3 rounded">
+                  <div class="d-flex align-items-center gap-3">
+                    <!-- Ícono de fuente -->
+                    <i class="bi bi-fonts fs-3"></i>
+              
+                    <!-- Selector de tipo de fuente -->
+                    <select id="fontSelect" class="form-select w-50">
+                      <option value="Arial">Arial</option>
+                      <option value="Times New Roman">Times New Roman</option>
+                      <option value="Courier New">Courier New</option>
+                      <option value="Georgia">Georgia</option>
+                    </select>
+              
+                    <!-- Selector de tamaño de fuente -->
+                    <select id="sizeSelect" class="form-select w-25">
+                      <option value="12px">12px</option>
+                      <option value="14px">14px</option>
+                      <option value="16px" selected>16px</option>
+                      <option value="18px">18px</option>
+                      <option value="20px">20px</option>
+                    </select>
+              
+                    <!-- Selector de color de fuente -->
+                    <input type="color" id="colorSelect" class="form-control form-control-color" value="#ffffff" title="Color de fuente">
+                  </div>
+                </div>
+              </div>
+              
+
+            <!-- Segundo div de 6 columnas -->
+            <div class="col-md-6 mb-4">
+                <div class="bg-secondary text-white text-center p-3 rounded">
+                    <p>Div 2 de 6 columnas</p>
+                </div>
+            </div>
+
+            <!-- Tercer div de 6 columnas -->
+            <div class="col-md-6 mb-4">
+                <div class="bg-secondary text-white text-center p-3 rounded">
+                    <p>Div 3 de 6 columnas</p>
+                </div>
+            </div>
+
+            <!-- Cuarto div de 6 columnas -->
+            <div class="col-md-6 mb-4">
+                <div class="bg-secondary text-white text-center p-3 rounded">
+                    <p>Div 4 de 6 columnas</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- Bootstrap JavaScript Libraries -->
