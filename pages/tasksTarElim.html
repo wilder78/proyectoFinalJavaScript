@@ -71,12 +71,24 @@
           </a>
     </div>
 
-    <section class="container my-4" id="mainContent">
+    <!-- <section class="container my-4" id="mainContent">
         <div class="flex-grow-1 p-3">
             <h1>Tareas eliminadas</h1>
             <p>Aquí va el contenido de tu app.</p>
         </div>
-    </section>
+    </section> -->
+    <section class="container my-4" id="mainContent">
+        <div class="flex-grow-1 p-3">
+          <h2>Tareas eliminadas</h2>
+          <p>Estas son las tareas que has eliminado:</p>
+          
+          <ul class="list-group" id="taskDeletedList">
+            <!-- Las tareas eliminadas se insertarán aquí con JavaScript -->
+          </ul>
+    
+          <button class="btn btn-secondary mt-3" onclick="window.location.href='tasksPage.html'">Volver a tareas</button>
+        </div>
+      </section>
 
 
 
@@ -90,6 +102,7 @@
         crossorigin="anonymous"></script>
     
     <!-- Link CSS --/-- Enlace CSS -->
+    <script src="../js/eliminacio.js"></script>
     <script src="../js/sidebars.js"></script>
 </body>
 

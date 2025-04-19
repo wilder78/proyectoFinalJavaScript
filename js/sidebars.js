@@ -79,97 +79,200 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
  
+
   // Registro de tareas
-  const taskForm = document.getElementById("taskForm");
-    const taskList = document.getElementById("taskList");
+const taskForm = document.getElementById("taskForm");
+const taskList = document.getElementById("taskList");
 
-    function actualizarContadores() {
-      const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+function actualizarContadores() {
+  const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
 
-      const pendientes = tareas.filter(t => t.estado === "Pendiente").length;
-      const realizadas = tareas.filter(t => t.estado === "Realizada").length;
-      const total = tareas.length;
+  const pendientes = tareas.filter(t => t.estado === "Pendiente").length;
+  const realizadas = tareas.filter(t => t.estado === "Realizada").length;
+  const total = tareas.length;
 
-      const contadorPendientes = document.getElementById("contadorPendientes");
-      const contadorRealizadas = document.getElementById("contadorRealizadas");
-      const contadorTotal = document.getElementById("contadorTotal"); // por si quieres usarlo después
+  const contadorPendientes = document.getElementById("contadorPendientes");
+  const contadorRealizadas = document.getElementById("contadorRealizadas");
+  const contadorTotal = document.getElementById("contadorTotal"); // por si quieres usarlo después
 
-      if (contadorPendientes) contadorPendientes.textContent = pendientes;
-      if (contadorRealizadas) contadorRealizadas.textContent = realizadas;
-      if (contadorTotal) contadorTotal.textContent = total;
-    }
+  if (contadorPendientes) contadorPendientes.textContent = pendientes;
+  if (contadorRealizadas) contadorRealizadas.textContent = realizadas;
+  if (contadorTotal) contadorTotal.textContent = total;
+}
 
-    const cargarTareas = () => {
-      const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-      const taskList = document.getElementById("taskList");
-    
-      if (taskList) taskList.innerHTML = "";
-    
-      tareas.forEach((tarea, index) => {
-        const estadoBadge =
-          tarea.estado === "Realizada"
-            ? '<span class="badge bg-success ms-2">Realizada</span>'
-            : '<span class="badge bg-warning text-dark ms-2">Pendiente</span>';
-    
-        const botonRealizar =
-          tarea.estado !== "Realizada"
-            ? `<button class="btn btn-success btn-sm me-2" onclick="marcarRealizada(${index})">Marcar como realizada</button>`
-            : "";
-    
-        const li = document.createElement("li");
-        li.className =
-          "list-group-item d-flex justify-content-between align-items-center";
-        li.innerHTML = `
-          <div>
-            <strong>${tarea.titulo}</strong> ${estadoBadge}<br>
-            <small>${tarea.descripcion}</small><br>
-            <em>Vence: ${tarea.fecha}</em>
-          </div>
-          <div>
-            ${botonRealizar}
-            <button class="btn btn-danger btn-sm" onclick="eliminarTarea(${index})">Eliminar</button>
-          </div>
-        `;
-    
-        if (taskList) taskList.appendChild(li); // Solo si existe
-      });
-    
-      actualizarContadores(); // Esto se sigue ejecutando sin problemas
+const cargarTareas = () => {
+  const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+  const taskList = document.getElementById("taskList");
+
+  if (taskList) taskList.innerHTML = "";
+
+  tareas.forEach((tarea, index) => {
+    const estadoBadge =
+      tarea.estado === "Realizada"
+        ? '<span class="badge bg-success ms-2">Realizada</span>'
+        : '<span class="badge bg-warning text-dark ms-2">Pendiente</span>';
+
+    const botonRealizar =
+      tarea.estado !== "Realizada"
+        ? `<button class="btn btn-success btn-sm me-2" onclick="marcarRealizada(${index})">Marcar como realizada</button>`
+        : "";
+
+    const li = document.createElement("li");
+    li.className =
+      "list-group-item d-flex justify-content-between align-items-center";
+    li.innerHTML = `
+      <div>
+        <strong>${tarea.titulo}</strong> ${estadoBadge}<br>
+        <small>${tarea.descripcion}</small><br>
+        <em>Vence: ${tarea.fecha}</em>
+      </div>
+      <div>
+        ${botonRealizar}
+        <button class="btn btn-danger btn-sm" onclick="eliminarTarea(${index})">Eliminar</button>
+      </div>
+    `;
+
+    if (taskList) taskList.appendChild(li); // Solo si existe
+  });
+
+  actualizarContadores(); // Esto se sigue ejecutando sin problemas
+};
+
+window.eliminarTarea = (index) => {
+  const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+  const tareasEliminadas = JSON.parse(localStorage.getItem("tareasEliminadas")) || [];
+
+  const tareaEliminada = tareas.splice(index, 1)[0]; // Extrae y elimina
+  tareasEliminadas.push(tareaEliminada); // Guarda en la lista de eliminadas
+
+  localStorage.setItem("tareas", JSON.stringify(tareas));
+  localStorage.setItem("tareasEliminadas", JSON.stringify(tareasEliminadas));
+
+  cargarTareas();
+};
+
+window.marcarRealizada = (index) => {
+  const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+  tareas[index].estado = "Realizada";
+  localStorage.setItem("tareas", JSON.stringify(tareas));
+  cargarTareas();
+};
+
+if (taskForm) {
+  taskForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nuevaTarea = {
+      titulo: document.getElementById("taskTitle").value.trim(),
+      descripcion: document.getElementById("taskDescription").value.trim(),
+      fecha: document.getElementById("taskDueDate").value,
+      estado: "Pendiente",
     };
 
-    window.eliminarTarea = (index) => {
-      const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-      tareas.splice(index, 1);
-      localStorage.setItem("tareas", JSON.stringify(tareas));
-      cargarTareas();
-    };
-
-    window.marcarRealizada = (index) => {
-      const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-      tareas[index].estado = "Realizada";
-      localStorage.setItem("tareas", JSON.stringify(tareas));
-      cargarTareas();
-    };
-
-    if (taskForm) {
-      taskForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const nuevaTarea = {
-          titulo: document.getElementById("taskTitle").value.trim(),
-          descripcion: document.getElementById("taskDescription").value.trim(),
-          fecha: document.getElementById("taskDueDate").value,
-          estado: "Pendiente",
-        };
-
-        const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-        tareas.push(nuevaTarea);
-        localStorage.setItem("tareas", JSON.stringify(tareas));
-        taskForm.reset();
-        cargarTareas();
-      });
-    }
-
+    const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+    tareas.push(nuevaTarea);
+    localStorage.setItem("tareas", JSON.stringify(tareas));
+    taskForm.reset();
     cargarTareas();
+  });
+}
+
+// ✅ Nueva función para obtener tareas eliminadas
+function obtenerTareasEliminadas() {
+  return JSON.parse(localStorage.getItem("tareasEliminadas")) || [];
+}
+
+cargarTareas();
+
+  // const taskForm = document.getElementById("taskForm");
+  //   const taskList = document.getElementById("taskList");
+
+  //   function actualizarContadores() {
+  //     const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+
+  //     const pendientes = tareas.filter(t => t.estado === "Pendiente").length;
+  //     const realizadas = tareas.filter(t => t.estado === "Realizada").length;
+  //     const total = tareas.length;
+
+  //     const contadorPendientes = document.getElementById("contadorPendientes");
+  //     const contadorRealizadas = document.getElementById("contadorRealizadas");
+  //     const contadorTotal = document.getElementById("contadorTotal"); // por si quieres usarlo después
+
+  //     if (contadorPendientes) contadorPendientes.textContent = pendientes;
+  //     if (contadorRealizadas) contadorRealizadas.textContent = realizadas;
+  //     if (contadorTotal) contadorTotal.textContent = total;
+  //   }
+
+  //   const cargarTareas = () => {
+  //     const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+  //     const taskList = document.getElementById("taskList");
+    
+  //     if (taskList) taskList.innerHTML = "";
+    
+  //     tareas.forEach((tarea, index) => {
+  //       const estadoBadge =
+  //         tarea.estado === "Realizada"
+  //           ? '<span class="badge bg-success ms-2">Realizada</span>'
+  //           : '<span class="badge bg-warning text-dark ms-2">Pendiente</span>';
+    
+  //       const botonRealizar =
+  //         tarea.estado !== "Realizada"
+  //           ? `<button class="btn btn-success btn-sm me-2" onclick="marcarRealizada(${index})">Marcar como realizada</button>`
+  //           : "";
+    
+  //       const li = document.createElement("li");
+  //       li.className =
+  //         "list-group-item d-flex justify-content-between align-items-center";
+  //       li.innerHTML = `
+  //         <div>
+  //           <strong>${tarea.titulo}</strong> ${estadoBadge}<br>
+  //           <small>${tarea.descripcion}</small><br>
+  //           <em>Vence: ${tarea.fecha}</em>
+  //         </div>
+  //         <div>
+  //           ${botonRealizar}
+  //           <button class="btn btn-danger btn-sm" onclick="eliminarTarea(${index})">Eliminar</button>
+  //         </div>
+  //       `;
+    
+  //       if (taskList) taskList.appendChild(li); // Solo si existe
+  //     });
+    
+  //     actualizarContadores(); // Esto se sigue ejecutando sin problemas
+  //   };
+
+  //   window.eliminarTarea = (index) => {
+  //     const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+  //     tareas.splice(index, 1);
+  //     localStorage.setItem("tareas", JSON.stringify(tareas));
+  //     cargarTareas();
+  //   };
+
+  //   window.marcarRealizada = (index) => {
+  //     const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+  //     tareas[index].estado = "Realizada";
+  //     localStorage.setItem("tareas", JSON.stringify(tareas));
+  //     cargarTareas();
+  //   };
+
+  //   if (taskForm) {
+  //     taskForm.addEventListener("submit", (e) => {
+  //       e.preventDefault();
+  //       const nuevaTarea = {
+  //         titulo: document.getElementById("taskTitle").value.trim(),
+  //         descripcion: document.getElementById("taskDescription").value.trim(),
+  //         fecha: document.getElementById("taskDueDate").value,
+  //         estado: "Pendiente",
+  //       };
+
+  //       const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+  //       tareas.push(nuevaTarea);
+  //       localStorage.setItem("tareas", JSON.stringify(tareas));
+  //       taskForm.reset();
+  //       cargarTareas();
+  //     });
+  //   }
+
+  //   cargarTareas();
 
 
   // Listado de tareas pendientes.
@@ -207,6 +310,25 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   
     mostrarPendientes(); // ← esta línea es clave
+  }
+
+
+  // Funcion para listar las tareas eliminadas
+  function mostrarTareasEliminadas() {
+    const tareasEliminadas = obtenerTareasEliminadas();
+    const lista = document.getElementById("taskDeletedList");
+    if (lista) lista.innerHTML = "";
+  
+    tareasEliminadas.forEach(tarea => {
+      const li = document.createElement("li");
+      li.className = "list-group-item";
+      li.innerHTML = `
+        <strong>${tarea.titulo}</strong><br>
+        <small>${tarea.descripcion}</small><br>
+        <em>Vencía: ${tarea.fecha}</em>
+      `;
+      lista.appendChild(li);
+    });
   }
   
 });
