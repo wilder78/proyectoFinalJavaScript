@@ -78,81 +78,101 @@ document.addEventListener("DOMContentLoaded", () => {
       content.style.backgroundColor = fondo;
     });
   }
-  // Gestión de tareas
+ 
+  // Registro de tareas
   const taskForm = document.getElementById("taskForm");
-  const taskList = document.getElementById("taskList");
+    const taskList = document.getElementById("taskList");
 
-  const cargarTareas = () => {
-    const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-    taskList.innerHTML = "";
-
-    tareas.forEach((tarea, index) => {
-      const li = document.createElement("li");
-      li.className =
-        "list-group-item d-flex justify-content-between align-items-center";
-
-      const estadoBadge =
-        tarea.estado === "Realizada"
-          ? '<span class="badge bg-success ms-2">Realizada</span>'
-          : '<span class="badge bg-warning text-dark ms-2">Pendiente</span>';
-
-      // Botón para marcar como realizada si no lo está
-      const botonRealizar =
-        tarea.estado !== "Realizada"
-          ? `<button class="btn btn-success btn-sm me-2" onclick="marcarRealizada(${index})">Marcar como realizada</button>`
-          : "";
-
-      li.innerHTML = `
-      <div>
-        <strong>${tarea.titulo}</strong> ${estadoBadge}<br>
-        <small>${tarea.descripcion}</small><br>
-        <em>Vence: ${tarea.fecha}</em>
-      </div>
-      <div>
-        ${botonRealizar}
-        <button class="btn btn-danger btn-sm" onclick="eliminarTarea(${index})">Eliminar</button>
-      </div>
-    `;
-      taskList.appendChild(li);
-    });
-  };
-  
-  window.eliminarTarea = (index) => {
-    const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-    tareas.splice(index, 1);
-    localStorage.setItem("tareas", JSON.stringify(tareas));
-    cargarTareas();
-  };
-
-  window.marcarRealizada = (index) => {
-    const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-    tareas[index].estado = "Realizada";
-    localStorage.setItem("tareas", JSON.stringify(tareas));
-    cargarTareas();
-  };
-
-  if (taskForm) {
-    taskForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nuevaTarea = {
-        titulo: document.getElementById("taskTitle").value.trim(),
-        descripcion: document.getElementById("taskDescription").value.trim(),
-        fecha: document.getElementById("taskDueDate").value,
-        estado: "Pendiente",
-      };
-
+    function actualizarContadores() {
       const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-      tareas.push(nuevaTarea);
-      localStorage.setItem("tareas", JSON.stringify(tareas));
-      taskForm.reset();
-      cargarTareas();
-    });
-  }
 
-  cargarTareas(); // Mostrar tareas al cargar
+      const pendientes = tareas.filter(t => t.estado === "Pendiente").length;
+      const realizadas = tareas.filter(t => t.estado === "Realizada").length;
+      const total = tareas.length;
+
+      const contadorPendientes = document.getElementById("contadorPendientes");
+      const contadorRealizadas = document.getElementById("contadorRealizadas");
+      const contadorTotal = document.getElementById("contadorTotal"); // por si quieres usarlo después
+
+      if (contadorPendientes) contadorPendientes.textContent = pendientes;
+      if (contadorRealizadas) contadorRealizadas.textContent = realizadas;
+      if (contadorTotal) contadorTotal.textContent = total;
+    }
+
+    const cargarTareas = () => {
+      const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+      const taskList = document.getElementById("taskList");
+    
+      if (taskList) taskList.innerHTML = "";
+    
+      tareas.forEach((tarea, index) => {
+        const estadoBadge =
+          tarea.estado === "Realizada"
+            ? '<span class="badge bg-success ms-2">Realizada</span>'
+            : '<span class="badge bg-warning text-dark ms-2">Pendiente</span>';
+    
+        const botonRealizar =
+          tarea.estado !== "Realizada"
+            ? `<button class="btn btn-success btn-sm me-2" onclick="marcarRealizada(${index})">Marcar como realizada</button>`
+            : "";
+    
+        const li = document.createElement("li");
+        li.className =
+          "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+          <div>
+            <strong>${tarea.titulo}</strong> ${estadoBadge}<br>
+            <small>${tarea.descripcion}</small><br>
+            <em>Vence: ${tarea.fecha}</em>
+          </div>
+          <div>
+            ${botonRealizar}
+            <button class="btn btn-danger btn-sm" onclick="eliminarTarea(${index})">Eliminar</button>
+          </div>
+        `;
+    
+        if (taskList) taskList.appendChild(li); // Solo si existe
+      });
+    
+      actualizarContadores(); // Esto se sigue ejecutando sin problemas
+    };
+
+    window.eliminarTarea = (index) => {
+      const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+      tareas.splice(index, 1);
+      localStorage.setItem("tareas", JSON.stringify(tareas));
+      cargarTareas();
+    };
+
+    window.marcarRealizada = (index) => {
+      const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+      tareas[index].estado = "Realizada";
+      localStorage.setItem("tareas", JSON.stringify(tareas));
+      cargarTareas();
+    };
+
+    if (taskForm) {
+      taskForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nuevaTarea = {
+          titulo: document.getElementById("taskTitle").value.trim(),
+          descripcion: document.getElementById("taskDescription").value.trim(),
+          fecha: document.getElementById("taskDueDate").value,
+          estado: "Pendiente",
+        };
+
+        const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+        tareas.push(nuevaTarea);
+        localStorage.setItem("tareas", JSON.stringify(tareas));
+        taskForm.reset();
+        cargarTareas();
+      });
+    }
+
+    cargarTareas();
+
 
   // Listado de tareas pendientes.
-  
   const listaPendientes = document.getElementById("listaPendientes"); 
   localStorage.getItem("tareas")
 
@@ -190,36 +210,3 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
 });
-
-// lista de tareas eliminada.
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   const mainContent = document.getElementById("mainContent");
-
-//   const mostrarEliminadas = () => {
-//     const tareasEliminadas = JSON.parse(localStorage.getItem("tareasEliminadas")) || [];
-
-//     const container = document.createElement("ul");
-//     container.className = "list-group";
-
-//     if (tareasEliminadas.length === 0) {
-//       container.innerHTML = `<li class="list-group-item text-center text-muted">No hay tareas eliminadas</li>`;
-//     } else {
-//       tareasEliminadas.forEach((tarea) => {
-//         const li = document.createElement("li");
-//         li.className = "list-group-item";
-//         li.innerHTML = `
-//           <strong>${tarea.titulo}</strong><br>
-//           <small>${tarea.descripcion}</small><br>
-//           <em>Vencía: ${tarea.fecha}</em>
-//         `;
-//         container.appendChild(li);
-//       });
-//     }
-
-//     // Reemplazar el contenido actual
-//     mainContent.querySelector("p").remove(); // quitar el párrafo "Aquí va el contenido de tu app."
-//     mainContent.appendChild(container);
-//   };
-
-//   mostrarEliminadas();
