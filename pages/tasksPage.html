@@ -52,12 +52,12 @@
 
         <a href="../pages/tasksTarReali.html" class="text-white mb-2 d-flex align-items-center gap-2">
             <i class="bi bi-check2-square"></i>
-            <span class="d-none d-md-inline">Tareas realizadas</span>
+            <span class="d-none d-md-inline">Tarea pendiente</span>
         </a>
 
         <a href="../pages/tasksTarElim.html" class="text-white mb-2 d-flex align-items-center gap-2">
             <i class="bi bi-trash"></i>
-            <span class="d-none d-md-inline">Eliminar tarea</span>
+            <span class="d-none d-md-inline">Tarea eliminada</span>
         </a>
 
         <a href="../pages/tasksConfi.html" class="text-white mb-2 d-flex align-items-center gap-2">
@@ -68,14 +68,40 @@
         <a href="#" class="text-white mb-2 d-flex align-items-center gap-2" onclick="confirmarSalida()">
             <i class="bi bi-box-arrow-right"></i>
             <span class="d-none d-md-inline">Salir</span>
-          </a>
+        </a>
     </div>
 
+    <section class="container my-4" id="mainContent">
+        <div class="flex-grow-1 p-3">
+            <h1>Registrar tareas</h1>
+    
+            <form id="taskForm" class="mt-4">
+                <div class="mb-3">
+                    <label for="taskTitle" class="form-label">Título de la tarea</label>
+                    <input type="text" id="taskTitle" class="form-control" required>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="taskDescription" class="form-label">Descripción</label>
+                    <textarea id="taskDescription" class="form-control" rows="3"></textarea>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="taskDueDate" class="form-label">Fecha de vencimiento</label>
+                    <input type="date" id="taskDueDate" class="form-control" required>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Guardar tarea</button>
+            </form>
+    
+            <hr>
+    
+            <h3 class="mt-4">Tareas guardadas</h3>
+            <ul id="taskList" class="list-group mt-2"></ul>
+        </div>
+    
+    </section>
 
-    <div class="flex-grow-1 p-3">
-        <h1>Registrar tareas</h1>
-        <p>Aquí va el contenido de tu app.</p>
-    </div>
 
 
     <!-- Bootstrap JavaScript Libraries -->
@@ -86,6 +112,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
+
+    <!-- Link CSS --/-- Enlace CSS -->
     <script src="../js/sidebars.js"></script>
 </body>
 
